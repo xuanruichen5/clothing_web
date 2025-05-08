@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>陳萱芮的個人網站</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: white;
+      color: #000000;
+      text-align: center;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .text-carousel {
+      background-color: #888888;
+      color: white;
+      padding: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      height: 1.5em;
+      overflow: hidden;
+      perspective: 1000px;
+    }
+
+    #carouselText {
+      display: inline-block;
+      animation: flipText 3s infinite;
+      transform-origin: center;
+    }
+
+    @keyframes flipText {
+      0% { transform: rotateX(90deg); opacity: 0; }
+      10% { transform: rotateX(0deg); opacity: 1; }
+      90% { transform: rotateX(0deg); opacity: 1; }
+      100% { transform: rotateX(-90deg); opacity: 0; }
+    }
+
+    .logo-wrapper {
+      background-color: white;
+      padding: 0.5rem 0;
+      position: relative;
+    }
+
+    .logo {
+      width: 120px;
+      max-width: 60%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .icon-bar {
+      position: absolute;
+      top: 0.2rem;
+      right: 1rem;
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .icon {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    .search-container {
+      position: relative;
+    }
+
+    #searchForm {
+      display: flex;
+      align-items: center;
+    }
+
+    #searchInput {
+      display: none;
+      border: none;
+      border-bottom: 2px solid #000;
+      outline: none;
+      font-size: 14px;
+      padding: 2px 5px;
+      margin-right: 5px;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .search-container:hover #searchInput,
+    .search-container:focus-within #searchInput {
+      display: inline-block;
+      width: 120px;
+    }
+
+    .search-result {
+      font-size: 14px;
+      color: #888;
+      position: absolute;
+      top: 30px;
+      left: 0;
+      white-space: nowrap;
+    }
+
+    .nav-links {
+      margin-top: 0.3rem;
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      font-size: 1rem;
+      position: relative;
+    }
+
+    .nav-links a {
+      color: #000000;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .nav-links a:hover {
+      color: #f8a5c2;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      flex-direction: column;
+      background-color: #ffffff;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 10;
+    }
+
+    .dropdown-content a {
+      color: #000;
+      padding: 0.3rem 0;
+      text-decoration: none;
+      display: block;
+      font-size: 1rem;
+    }
+
+    .dropdown-content a:hover {
+      color: #f8a5c2;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: flex;
+    }
+
+    .cover-container {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 60vh;
+      position: relative;
+    }
+
+    .cover-image {
+      width: auto;
+      height: auto;
+      max-width: 90vw;
+      max-height: 70vh;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .dot-indicators {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 10px;
+    }
+
+    .dot {
+      width: 10px;
+      height: 10px;
+      background-color: #ccc;
+      border-radius: 50%;
+      display: inline-block;
+      transition: background-color 0.3s;
+    }
+
+    .dot.active {
+      background-color: #555;
+    }
+
+    .product-section {
+      margin-top: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 1.5rem;
+      font-weight: bold;
+      color: #000;
+    }
+
+    .product-row {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .product-image {
+      width: 160px;
+      height: auto;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .product-image:hover {
+      transform: scale(1.05);
+    }
+
+    .view-more {
+      margin-top: 1.5rem;
+    }
+
+    .view-more a {
+      display: inline-block;
+      padding: 0.6rem 2rem;
+      font-size: 1rem;
+      color: white;
+      background-color: #555555;
+      text-decoration: none;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .view-more a:hover {
+      background-color: #333333;
+    }
+
+    .footer {
+      padding: 3rem 2rem 2rem;
+      font-size: 0.95rem;
+      color: #000000;
+    }
+
+    .footer a {
+      color: #000000;
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="text-carousel">
+    <div id="carouselText">限時官網下單免運費</div>
+  </div>
+
+  <div class="logo-wrapper">
+    <img src="logo.png" class="logo" alt="logo">
+    <div class="icon-bar">
+      <div class="search-container">
+        <form id="searchForm">
+          <input type="text" id="searchInput" placeholder="找商品">
+          <button type="submit" style="background: none; border: none; padding: 0;">
+            <img src="尋找.png" alt="搜尋" class="icon">
+          </button>
+        </form>
+        <div id="searchResult" class="search-result"></div>
+      </div>
+      <a href="member.html"><img src="會員.png" class="icon" alt="會員"></a>
+      <a href="cart.html"><img src="購物車.png" class="icon" alt="購物車"></a>
+    </div>
+  </div>
+
+  <nav class="nav-links">
+    <a href="brand.html">品牌介紹</a>
+    <a href="store.html">門市據點</a>
+    <a href="promo.html">優惠活動</a>
+    <a href="new.html">本週新品</a>
+    <div class="dropdown">
+      <a>所有商品</a>
+      <div class="dropdown-content">
+        <a href="clothes.html">衣服</a>
+        <a href="pants.html">褲子</a>
+        <a href="accessories.html">飾品</a>
+      </div>
+    </div>
+    <a href="support.html">客服服務</a>
+  </nav>
+
+  <div class="cover-container">
+    <img id="coverImage" class="cover-image" src="封面1.jpg" alt="封面圖片">
+    <div class="dot-indicators">
+      <span class="dot active"></span>
+      <span class="dot"></span>
+      <span class="dot"></span>
+    </div>
+  </div>
+
+  <section class="product-section">
+    <h2 class="section-title">本週新品</h2>
+
+    <!-- ✅ 新品第1行 -->
+    <div class="product-row">
+      <img src="新品1.png" data-hover="新品1-1.png" class="product-image">
+      <img src="新品2.png" data-hover="新品2-1.png" class="product-image">
+      <img src="新品3.png" data-hover="新品3-1.png" class="product-image">
+      <img src="新品4.png" data-hover="新品4-1.png" class="product-image">
+      <img src="新品5.png" data-hover="新品5-1.png" class="product-image">
+    </div>
+
+    <!-- ✅ 新品第2行 -->
+    <div class="product-row">
+      <img src="新品6.png" data-hover="新品6-1.png" class="product-image">
+      <img src="新品7.png" data-hover="新品7-1.png" class="product-image">
+      <img src="新品8.png" data-hover="新品8-1.png" class="product-image">
+      <img src="新品9.png" data-hover="新品9-1.png" class="product-image">
+      <img src="新品10.png" data-hover="新品10-1.png" class="product-image">
+    </div>
+
+    <div class="view-more"><a href="new.html">查看更多</a></div>
+  </section>
+
+  <div class="footer">
+    <p>Email: <a href="mailto:xuanruichen5@gmail.com">xuanruichen5@gmail.com</a><br>
+    © 2025 陳萱芮. 保留所有權利。</p>
+  </div>
+
+  <!-- JS 區塊 -->
+  <script>
+    const imageElement = document.getElementById("coverImage");
+    const images = ["封面1.jpg", "封面2.jpg", "封面3.jpg"];
+    const dots = document.querySelectorAll(".dot");
+    let index = 0;
+    function showImage(idx) {
+      imageElement.src = images[idx];
+      dots.forEach(dot => dot.classList.remove("active"));
+      dots[idx].classList.add("active");
+    }
+    setInterval(() => {
+      index = (index + 1) % images.length;
+      showImage(index);
+    }, 3000);
+
+    const productImages = document.querySelectorAll(".product-image");
+    productImages.forEach(img => {
+      const originalSrc = img.src;
+      const hoverSrc = img.getAttribute("data-hover");
+      img.addEventListener("mouseenter", () => img.src = hoverSrc);
+      img.addEventListener("mouseleave", () => img.src = originalSrc);
+    });
+
+    document.getElementById("searchForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const input = document.getElementById("searchInput").value.trim();
+      document.getElementById("searchResult").textContent = input ? "找不到" : "請輸入關鍵字";
+    });
+
+    const carouselTexts = [
+      "限時官網下單免運費",
+      "夏季新品上市中",
+      "母親節優惠滿千送百"
+    ];
+    const textContainer = document.getElementById("carouselText");
+    let textIndex = 0;
+    setInterval(() => {
+      textIndex = (textIndex + 1) % carouselTexts.length;
+      textContainer.textContent = carouselTexts[textIndex];
+    }, 3000);
+  </script>
+
+</body>
+</html>
