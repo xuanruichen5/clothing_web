@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>陳萱芮的個人網站</title>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       font-family: 'Arial', sans-serif;
       margin: 0;
@@ -22,13 +26,14 @@
       padding: 1rem;
       font-size: 1.2rem;
       font-weight: bold;
-      height: 1.5em;
-      overflow: hidden;
+      height: 2.5em;
+      display: flex;
+      justify-content: center;
+      align-items: center;
       perspective: 1000px;
     }
 
     #carouselText {
-      display: inline-block;
       animation: flipText 3s infinite;
       transform-origin: center;
     }
@@ -155,7 +160,8 @@
       color: #f8a5c2;
     }
 
-    .dropdown:hover .dropdown-content {
+    .dropdown:hover .dropdown-content,
+    .dropdown:focus-within .dropdown-content {
       display: flex;
     }
 
@@ -215,12 +221,12 @@
       margin-top: 2rem;
       display: flex;
       justify-content: center;
-      gap: 2rem;
+      gap: 1rem;
       flex-wrap: wrap;
     }
 
     .product-image {
-      width: 160px;
+      width: 150px;
       height: auto;
       transition: transform 0.3s ease;
       cursor: pointer;
@@ -259,14 +265,38 @@
       color: #000000;
       text-decoration: underline;
     }
+
+    @media screen and (max-width: 768px) {
+      .nav-links {
+        flex-direction: column;
+        gap: 0.8rem;
+      }
+
+      .icon-bar {
+        top: 0.5rem;
+        right: 0.5rem;
+        gap: 0.5rem;
+      }
+
+      .product-image {
+        width: 40vw;
+      }
+
+      .cover-image {
+        max-width: 95vw;
+        max-height: 60vh;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <!-- 灰色輪播文字 -->
   <div class="text-carousel">
     <div id="carouselText">限時官網下單免運費</div>
   </div>
 
+  <!-- LOGO + ICON 區塊 -->
   <div class="logo-wrapper">
     <img src="logo.png" class="logo" alt="logo">
     <div class="icon-bar">
@@ -274,7 +304,7 @@
         <form id="searchForm">
           <input type="text" id="searchInput" placeholder="找商品">
           <button type="submit" style="background: none; border: none; padding: 0;">
-            <img src="尋找.png" alt="搜尋" class="icon">
+            <img src="尋找.png" class="icon" alt="搜尋">
           </button>
         </form>
         <div id="searchResult" class="search-result"></div>
@@ -284,13 +314,14 @@
     </div>
   </div>
 
+  <!-- 導覽列 + 子項目 -->
   <nav class="nav-links">
     <a href="brand.html">品牌介紹</a>
     <a href="store.html">門市據點</a>
     <a href="promo.html">優惠活動</a>
     <a href="new.html">本週新品</a>
     <div class="dropdown">
-      <a>所有商品</a>
+      <a tabindex="0">所有商品</a>
       <div class="dropdown-content">
         <a href="clothes.html">衣服</a>
         <a href="pants.html">褲子</a>
@@ -300,6 +331,7 @@
     <a href="support.html">客服服務</a>
   </nav>
 
+  <!-- 封面圖片 -->
   <div class="cover-container">
     <img id="coverImage" class="cover-image" src="封面1.jpg" alt="封面圖片">
     <div class="dot-indicators">
@@ -309,10 +341,9 @@
     </div>
   </div>
 
+  <!-- 新品區 -->
   <section class="product-section">
     <h2 class="section-title">本週新品</h2>
-
-    <!-- ✅ 新品第1行 -->
     <div class="product-row">
       <img src="新品1.png" data-hover="新品1-1.png" class="product-image">
       <img src="新品2.png" data-hover="新品2-1.png" class="product-image">
@@ -320,8 +351,6 @@
       <img src="新品4.png" data-hover="新品4-1.png" class="product-image">
       <img src="新品5.png" data-hover="新品5-1.png" class="product-image">
     </div>
-
-    <!-- ✅ 新品第2行 -->
     <div class="product-row">
       <img src="新品6.png" data-hover="新品6-1.png" class="product-image">
       <img src="新品7.png" data-hover="新品7-1.png" class="product-image">
@@ -329,26 +358,30 @@
       <img src="新品9.png" data-hover="新品9-1.png" class="product-image">
       <img src="新品10.png" data-hover="新品10-1.png" class="product-image">
     </div>
-
-    <div class="view-more"><a href="new.html">查看更多</a></div>
+    <div class="view-more">
+      <a href="new.html">查看更多</a>
+    </div>
   </section>
 
+  <!-- 頁尾 -->
   <div class="footer">
     <p>Email: <a href="mailto:xuanruichen5@gmail.com">xuanruichen5@gmail.com</a><br>
     © 2025 陳萱芮. 保留所有權利。</p>
   </div>
 
-  <!-- JS 區塊 -->
+  <!-- JavaScript -->
   <script>
     const imageElement = document.getElementById("coverImage");
     const images = ["封面1.jpg", "封面2.jpg", "封面3.jpg"];
     const dots = document.querySelectorAll(".dot");
     let index = 0;
+
     function showImage(idx) {
       imageElement.src = images[idx];
       dots.forEach(dot => dot.classList.remove("active"));
       dots[idx].classList.add("active");
     }
+
     setInterval(() => {
       index = (index + 1) % images.length;
       showImage(index);
@@ -360,6 +393,8 @@
       const hoverSrc = img.getAttribute("data-hover");
       img.addEventListener("mouseenter", () => img.src = hoverSrc);
       img.addEventListener("mouseleave", () => img.src = originalSrc);
+      img.addEventListener("touchstart", () => img.src = hoverSrc);
+      img.addEventListener("touchend", () => img.src = originalSrc);
     });
 
     document.getElementById("searchForm").addEventListener("submit", function(e) {
