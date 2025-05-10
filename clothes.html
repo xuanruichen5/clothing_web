@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>衣服 - 所有商品</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #000;
+    }
+
+    /* 🔁 最上面輪播區塊 */
+    .text-carousel {
+      background-color: #888888;
+      color: white;
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* ✅ LOGO + 導覽列（在灰色區塊下方） */
+    .logo-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo-nav-bar img.logo {
+      height: 60px;
+      cursor: pointer;
+    }
+
+    .logo-nav-bar .nav-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .logo-nav-bar .nav-links a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .logo-nav-bar .nav-links a:hover {
+      color: #f08aa2;
+    }
+
+    .product-section {
+      padding: 2rem;
+    }
+
+    .product-row {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .product-item {
+      width: 160px;
+    }
+
+    .product-item img {
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .product-item img:hover {
+      transform: scale(1.05);
+    }
+
+    .product-title {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #333;
+    }
+
+    a.back {
+      display: inline-block;
+      margin: 2rem;
+      text-decoration: none;
+      color: #f08aa2;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .logo-nav-bar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .logo-nav-bar .nav-links {
+        justify-content: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🔁 上方灰色輪播區塊 -->
+  <div class="text-carousel" id="carouselText">限時官網下單免運費</div>
+
+  <!-- ✅ LOGO + 導覽列 -->
+  <div class="logo-nav-bar">
+    <a href="index.html">
+      <img src="logo.png" class="logo" alt="logo">
+    </a>
+    <div class="nav-links">
+      <a href="brand.html">品牌介紹</a>
+      <a href="store.html">門市據點</a>
+      <a href="promo.html">優惠活動</a>
+      <a href="new.html">本週新品</a>
+      <a href="products.html">所有商品</a>
+      <a href="support.html">客服服務</a>
+    </div>
+  </div>
+
+  <!-- 衣服商品 -->
+  <section class="product-section">
+    <!-- 第1排 -->
+    <div class="product-row">
+      <div class="product-item">
+        <img src="衣服1.png" data-hover="衣服1-1.png" alt="衣服1">
+        <div class="product-title">衣服1</div>
+      </div>
+      <div class="product-item">
+        <img src="衣服2.png" data-hover="衣服2-1.png" alt="衣服2">
+        <div class="product-title">衣服2</div>
+      </div>
+      <div class="product-item">
+        <img src="衣服3.png" data-hover="衣服3-1.png" alt="衣服3">
+        <div class="product-title">衣服3</div>
+      </div>
+    </div>
+
+    <!-- 第2排 -->
+    <div class="product-row" style="margin-top: 2rem;">
+      <div class="product-item">
+        <img src="衣服4.png" data-hover="衣服4-1.png" alt="衣服4">
+        <div class="product-title">衣服4</div>
+      </div>
+      <div class="product-item">
+        <img src="衣服5.png" data-hover="衣服5-1.png" alt="衣服5">
+        <div class="product-title">衣服5</div>
+      </div>
+      <div class="product-item">
+        <img src="衣服6.png" data-hover="衣服6-1.png" alt="衣服6">
+        <div class="product-title">衣服6</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 返回首頁 -->
+  <a href="index.html" class="back">← 回首頁</a>
+
+  <!-- JS -->
+  <script>
+    const productImages = document.querySelectorAll(".product-item img");
+    productImages.forEach(img => {
+      const originalSrc = img.src;
+      const hoverSrc = img.getAttribute("data-hover");
+      img.addEventListener("mouseenter", () => img.src = hoverSrc);
+      img.addEventListener("mouseleave", () => img.src = originalSrc);
+    });
+
+    const carouselTexts = [
+      "限時官網下單免運費",
+      "夏季新品上市中",
+      "母親節優惠滿千送百"
+    ];
+    const textContainer = document.getElementById("carouselText");
+    let textIndex = 0;
+    setInterval(() => {
+      textIndex = (textIndex + 1) % carouselTexts.length;
+      textContainer.textContent = carouselTexts[textIndex];
+    }, 3000);
+  </script>
+
+</body>
+</html>
