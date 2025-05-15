@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>會員登入與註冊</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #ffffff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      color: #000;
+    }
+
+    .text-carousel {
+      background-color: #888888;
+      color: white;
+      padding: 1rem;
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    .logo-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo-nav-bar img.logo {
+      height: 60px;
+      cursor: pointer;
+    }
+
+    .logo-nav-bar .nav-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .logo-nav-bar .nav-links a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .logo-nav-bar .nav-links a:hover {
+      color: #f08aa2;
+    }
+
+    .member-container {
+      max-width: 400px;
+      margin: 3rem auto;
+      padding: 2rem;
+      border: 1px solid #ccc;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .member-container h2 {
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .member-container input {
+      width: 100%;
+      padding: 0.8rem;
+      margin-bottom: 1rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    .member-container button {
+      width: 100%;
+      padding: 0.8rem;
+      background-color: #f08aa2;
+      border: none;
+      color: white;
+      font-size: 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .member-container button:hover {
+      background-color: #e0678e;
+    }
+
+    .toggle-link {
+      margin-top: 1rem;
+      font-size: 0.95rem;
+      color: #555;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .logo-nav-bar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 輪播文字 -->
+  <div class="text-carousel" id="carouselText">限時官網下單免運費</div>
+
+  <!-- 導覽列 -->
+  <div class="logo-nav-bar">
+    <a href="index.html">
+      <img src="logo.png" class="logo" alt="logo">
+    </a>
+    <div class="nav-links">
+      <a href="brand.html">品牌介紹</a>
+      <a href="store.html">門市據點</a>
+      <a href="promo.html">優惠活動</a>
+      <a href="new.html">本週新品</a>
+      <a href="products.html">所有商品</a>
+      <a href="support.html">客服服務</a>
+    </div>
+  </div>
+
+  <!-- 登入/註冊表單 -->
+  <div class="member-container">
+    <h2 id="formTitle">會員登入</h2>
+    <input type="email" placeholder="Email" id="emailInput">
+    <input type="password" placeholder="密碼（至少6位）" id="passwordInput">
+    <button type="button" onclick="submitForm()">登入</button>
+    <div class="toggle-link" onclick="toggleForm()">還不是會員？點我註冊</div>
+  </div>
+
+  <!-- Firebase CDN 相容版（不要用模組版本） -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+
+  <script>
+    // ✅ Firebase 設定
+    const firebaseConfig = {
+      apiKey: "AIzaSyDIHo9sw27uolNQ8hvytr2IRrGR7GgmNlo",
+      authDomain: "clothing-web-94f7c.firebaseapp.com",
+      projectId: "clothing-web-94f7c",
+      storageBucket: "clothing-web-94f7c.appspot.com",
+      messagingSenderId: "45525969705",
+      appId: "1:45525969705:web:55a7663a537e3a4020a538"
+    };
+
+    // ✅ 初始化 Firebase
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    // ✅ 狀態變數
+    let isLogin = true;
+
+    // ✅ 輪播文字效果
+    const texts = ["限時官網下單免運費", "夏季新品上市中", "母親節優惠滿千送百"];
+    let idx = 0;
+    setInterval(() => {
+      idx = (idx + 1) % texts.length;
+      document.getElementById("carouselText").textContent = texts[idx];
+    }, 3000);
+
+    // ✅ 切換登入 / 註冊模式
+    function toggleForm() {
+      const title = document.getElementById("formTitle");
+      const button = document.querySelector(".member-container button");
+      const toggle = document.querySelector(".toggle-link");
+      if (isLogin) {
+        title.textContent = "會員註冊";
+        button.textContent = "註冊";
+        toggle.textContent = "已有帳號？點我登入";
+      } else {
+        title.textContent = "會員登入";
+        button.textContent = "登入";
+        toggle.textContent = "還不是會員？點我註冊";
+      }
+      isLogin = !isLogin;
+      console.log("目前模式：" + (isLogin ? "登入" : "註冊"));
+    }
+
+    // ✅ 提交表單
+    function submitForm() {
+      const email = document.getElementById("emailInput").value.trim();
+      const password = document.getElementById("passwordInput").value.trim();
+
+      if (!email || !password) {
+        alert("請填寫所有欄位");
+        return;
+      }
+
+      if (isLogin) {
+        auth.signInWithEmailAndPassword(email, password)
+          .then(userCredential => {
+            alert("登入成功！");
+            console.log("使用者資訊：", userCredential.user);
+            // 你也可以跳轉頁面，例如：
+            // window.location.href = "member_home.html";
+          })
+          .catch(error => {
+            console.error("登入失敗", error);
+            alert("登入失敗：" + error.message);
+          });
+      } else {
+        auth.createUserWithEmailAndPassword(email, password)
+          .then(userCredential => {
+            alert("註冊成功！");
+            console.log("新使用者：", userCredential.user);
+          })
+          .catch(error => {
+            console.error("註冊失敗", error);
+            alert("註冊失敗：" + error.message);
+          });
+      }
+    }
+  </script>
+
+</body>
+</html>
