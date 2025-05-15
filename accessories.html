@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>飾品 - 所有商品</title>
   <style>
     body {
@@ -10,64 +10,304 @@
       background: #ffffff;
       margin: 0;
       padding: 0;
-      text-align: center;
+      color: #000;
     }
 
-    header {
-      background-color: #ffd6a5;
+    /* ✅ 灰色輪播區塊設定 */
+    .text-carousel {
+      background-color: #888888;
       color: white;
-      padding: 1rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      perspective: 1000px;
+      height: 60px;            /* ✅ 固定高度 */
+      overflow: hidden;        /* ✅ 防止動畫撐開區塊 */
     }
 
-    .product-section {
-      padding: 2rem;
+    #carouselText {
+      animation: flipText 3s infinite;
+      transform-origin: center;
+      white-space: nowrap;     /* ✅ 禁止換行 */
+    }
+
+    @keyframes flipText {
+      0% { transform: rotateX(90deg); opacity: 0; }
+      10% { transform: rotateX(0deg); opacity: 1; }
+      90% { transform: rotateX(0deg); opacity: 1; }
+      100% { transform: rotateX(-90deg); opacity: 0; }
+    }
+
+    .logo-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      flex-wrap: wrap;
+    }
+
+    .logo-nav-bar img.logo {
+      height: 80px;
+      cursor: pointer;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      flex-wrap: wrap;
+      justify-content: center;
+      position: relative;
+    }
+
+    .nav-links a {
+      color: #000;
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: color 0.3s;
+    }
+
+    .nav-links a:hover {
+      color: #f08aa2;
+    }
+
+    .dropdown {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background-color: white;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      padding: 0.5rem 1rem;
+      z-index: 100;
+      white-space: nowrap;
+    }
+
+    .dropdown-content a {
+      display: block;
+      text-align: left;
+      padding: 0.3rem 0;
+      color: #000;
+      font-size: 1rem;
+      text-decoration: none;
+    }
+
+    .dropdown-content a:hover {
+      color: #f08aa2;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      display: flex;
+      gap: 3rem;
+    }
+
+    .sidebar {
+      flex: 1;
+      min-width: 160px;
+      font-size: 1.1rem;
+    }
+
+    .sidebar h3 {
+      font-size: 1.3rem;
+      margin-bottom: 1rem;
+    }
+
+    .sidebar a {
+      display: block;
+      text-decoration: none;
+      color: #333;
+      margin-bottom: 0.8rem;
+    }
+
+    .sidebar a:hover {
+      color: #f08aa2;
+    }
+
+    .product-area {
+      flex: 4;
+    }
+
+    .product-row {
+      display: flex;
+      justify-content: center;
+      gap: 6rem;
+      margin-bottom: 2.5rem;
     }
 
     .product-item {
-      display: inline-block;
-      margin: 1rem;
       width: 200px;
+      text-align: center;
     }
 
     .product-item img {
       width: 100%;
       height: auto;
       border-radius: 10px;
+      transition: transform 0.3s ease;
+      cursor: pointer;
+    }
+
+    .product-item img:hover {
+      transform: scale(1.05);
     }
 
     .product-title {
-      margin-top: 0.5rem;
-      font-size: 1rem;
+      margin-top: 0.6rem;
+      font-size: 1.1rem;
       color: #333;
     }
 
-    a.back {
-      display: inline-block;
-      margin: 2rem;
+    .back {
+      display: block;
+      margin: 2rem auto;
+      text-align: center;
       text-decoration: none;
-      color: #ff924c;
+      color: #f08aa2;
       font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .main-container {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .product-row {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .product-item {
+        width: 60%;
+      }
+
+      .logo-nav-bar {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .dropdown-content {
+        position: static;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+        background-color: transparent;
+      }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <h1>飾品商品</h1>
-  </header>
+  <!-- ✅ 灰色文字區塊（動畫） -->
+  <div class="text-carousel">
+    <div id="carouselText">限時官網下單免運費</div>
+  </div>
 
-  <section class="product-section">
-    <div class="product-item">
-      <img src="accessory1.jpg" alt="飾品1">
-      <div class="product-title">珍珠項鍊</div>
+  <!-- ✅ LOGO + 導覽列 -->
+  <div class="logo-nav-bar">
+    <a href="index.html">
+      <img src="logo.png" class="logo" alt="logo">
+    </a>
+    <div class="nav-links">
+      <a href="brand.html">品牌介紹</a>
+      <a href="store.html">門市據點</a>
+      <a href="promo.html">優惠活動</a>
+      <a href="new.html">本週新品</a>
+      <div class="dropdown">
+        <a>所有商品</a>
+        <div class="dropdown-content">
+          <a href="clothes.html">衣服</a>
+          <a href="pants.html">褲子</a>
+          <a href="accessories.html">飾品</a>
+        </div>
+      </div>
+      <a href="support.html">客服服務</a>
     </div>
-    <div class="product-item">
-      <img src="accessory2.jpg" alt="飾品2">
-      <div class="product-title">簡約耳環</div>
+  </div>
+
+  <!-- ✅ 主內容區塊 -->
+  <div class="main-container">
+    <div class="sidebar">
+      <h3>分類瀏覽</h3>
+      <a href="#">本週新品</a>
+      <a href="#">人氣商品</a>
+      <a href="#">特賣優惠</a>
     </div>
-  </section>
+
+    <div class="product-area">
+      <div class="product-row">
+        <div class="product-item">
+          <img src="飾品1.png" data-hover="飾品1-1.png" alt="飾品1">
+          <div class="product-title">飾品1</div>
+        </div>
+        <div class="product-item">
+          <img src="飾品2.png" data-hover="飾品2-1.png" alt="飾品2">
+          <div class="product-title">飾品2</div>
+        </div>
+        <div class="product-item">
+          <img src="飾品3.png" data-hover="飾品3-1.png" alt="飾品3">
+          <div class="product-title">飾品3</div>
+        </div>
+      </div>
+
+      <div class="product-row">
+        <div class="product-item">
+          <img src="飾品4.png" data-hover="飾品4-1.png" alt="飾品4">
+          <div class="product-title">飾品4</div>
+        </div>
+        <div class="product-item">
+          <img src="飾品5.png" data-hover="飾品5-1.png" alt="飾品5">
+          <div class="product-title">飾品5</div>
+        </div>
+        <div class="product-item">
+          <img src="飾品6.png" data-hover="飾品6-1.png" alt="飾品6">
+          <div class="product-title">飾品6</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <a href="index.html" class="back">← 回首頁</a>
+
+  <!-- ✅ JS for Carousel + Hover Image -->
+  <script>
+    // 輪播文字設定
+    const carouselTexts = [
+      "限時官網下單免運費",
+      "夏季新品上市中",
+      "母親節優惠滿千送百"
+    ];
+    const textContainer = document.getElementById("carouselText");
+    let textIndex = 0;
+    setInterval(() => {
+      textIndex = (textIndex + 1) % carouselTexts.length;
+      textContainer.textContent = carouselTexts[textIndex];
+    }, 3000);
+
+    // 商品圖片 hover 切換
+    const productImages = document.querySelectorAll(".product-item img");
+    productImages.forEach(img => {
+      const originalSrc = img.src;
+      const hoverSrc = img.getAttribute("data-hover");
+      img.addEventListener("mouseenter", () => img.src = hoverSrc);
+      img.addEventListener("mouseleave", () => img.src = originalSrc);
+    });
+  </script>
 
 </body>
 </html>
